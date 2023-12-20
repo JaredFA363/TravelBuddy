@@ -3,6 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package external;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -13,25 +15,33 @@ import java.net.URL;
  * @author jared
  */
 public class RandomNumberService {
-    public String getRandomID(){
+    public String generateRandomID(){
+        String response = "";
         try {
             URL url = new URL("https://csrng.net/csrng/csrng.php?min=1&max=9999&num=" + 1);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestProperty("Content-Type","application/json;charset=utf-8");
             con.setRequestMethod("GET");
 
             if (con.getResponseCode() == 200) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                StringBuilder response = new StringBuilder();
-                String line;
+                //StringBuilder response = new StringBuilder();
+                //String line;
 
-                while ((line = reader.readLine()) != null) {
-                    response.append(line);
+                //while ((line = reader.readLine()) != null) {
+                //    response.append(line);
+                //}
+                
+                String line = reader.readLine();
+                while (line != null){
+                    response += line + "\r\n";
+                    line = reader.readLine();
                 }
-                reader.close();
-                con.disconnect();
-
-                System.out.println("Generated IDs: " + response.toString());
-                return response.toString();
+                //reader.close();
+                //con.disconnect();
+                response = response.substring(1, response.length()-3);
+                //System.out.println("Generated IDs: " + response.toString());
+                //return response.toString();
             } else {
                 System.out.println("Failed to retrieve random IDs. HTTP error code: " + con.getResponseCode());
                 return "Failed to retrieve random IDs. HTTP error code:" + con.getResponseCode();
@@ -39,11 +49,25 @@ public class RandomNumberService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "";
+        return response;
     }
     
-    //public static void main(String args[]){
-    //    RandomNumberService rn = new RandomNumberService();
-    //    rn.getRandomID();
-    //}
+    public RandomNumGetterSetter getRandomID(){
+        String ID = this.generateRandomID();
+        GsonBuilder builder = new GsonBuilder();
+        builder.setPrettyPrinting();
+        Gson gson = builder.create();
+        
+        RandomNumGetterSetter rn = gson.fromJson(ID, RandomNumGetterSetter.class);
+        
+        return rn;
+    }
+    
+    public static void main(String args[]){
+        RandomNumberService rn = new RandomNumberService();
+        //String ans = rn.generateRandomID();
+        //System.out.println(ans);
+        RandomNumGetterSetter rngs = rn.getRandomID();
+        System.out.println(rngs.getRandom());
+    }
 }

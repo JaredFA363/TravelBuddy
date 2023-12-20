@@ -12,3 +12,9 @@ os.arch=amd64
 os.version=10.0
 derby.system.home=C:\Users\jared\OneDrive\Documents\YEAR3\SCC\Coursework1\TravelBuddyServer
 Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Mon Dec 18 22:07:03 GMT 2023: Shutting down Derby engine
+----------------------------------------------------------------
+Mon Dec 18 22:07:03 GMT 2023:
+Shutting down instance a816c00e-018c-7ebc-e9b6-ffff92c1d068 on database directory C:\Users\jared\OneDrive\Documents\YEAR3\SCC\Coursework1\TravelBuddyServer\Travel with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@73d16e93 
+----------------------------------------------------------------

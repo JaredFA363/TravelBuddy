@@ -11,10 +11,15 @@ import java.sql.*;
  */
 public class DatabaseHandler {
     
-    public String insertUser(){
+    public String insertUser(String in_username,String in_name, String in_password){
         Connection mycon = null;
         Statement statement = null;
-        String query = "INSERT INTO USERS (id, username, name, password) VALUES (10,'y','y','y')";
+        
+        RandomNumberService rn = new RandomNumberService();
+        RandomNumGetterSetter rngs = rn.getRandomID();
+        int in_id = rngs.getRandom();
+        
+        String query = "INSERT INTO USERS (id, username, name, password) VALUES ("+in_id+",'"+in_username+"','"+in_name+"','"+in_password+"')";
         String response = "Error"; 
         
         try{
@@ -30,14 +35,15 @@ public class DatabaseHandler {
         return response;
     }
     
-    public String queryUser(){
+    public String queryUser(String in_username, String in_password){
         Connection mycon = null;
         Statement statement = null;
         ResultSet rs = null;
-        String query = "SELECT * FROM users WHERE username = 'u'";
+        String query = "SELECT * FROM users WHERE username = '"+in_username+"'";
         String response = "Error"; 
         
         try{
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             mycon = DriverManager.getConnection("jdbc:derby://localhost:1527/Travel","j","j");
             statement = mycon.createStatement();
             rs = statement.executeQuery(query);
@@ -46,13 +52,26 @@ public class DatabaseHandler {
                 String username = rs.getString("username");
                 String name = rs.getString("name");
                 String password = rs.getString("password");
-                System.out.println(id + " " + username + " " + name + " " + password);
-                response = "Success";
+                //System.out.println(id + " " + username + " " + name + " " + password);
+                response = username + " " + name + " " + password;
+                if (in_password.equals(password)){
+                    response = "Success";
+                }
+                else{
+                    response = "Not matching in_password = "+in_password +" password = "+password;
+                }
             }
         }
-        catch(SQLException e){
+        catch(ClassNotFoundException | SQLException e){
             e.printStackTrace();
+            response = e.getMessage();
         }
         return response;
     }
+    
+    //public static void main(String args[]){
+    //    DatabaseHandler db = new DatabaseHandler();
+    //    String and = db.queryUser("stable");
+    //    System.out.println(and);
+    //}
 }

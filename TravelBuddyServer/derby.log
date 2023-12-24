@@ -1,7 +1,7 @@
-Sat Dec 23 13:47:42 GMT 2023 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 1527
+Sun Dec 24 11:06:50 GMT 2023 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Sat Dec 23 13:47:42 GMT 2023:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-018c-96ee-81c3-ffff92c1d068 
+Sun Dec 24 11:06:51 GMT 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-018c-9b81-97e1-ffff92c1d068 
 on database directory C:\Users\jared\OneDrive\Documents\YEAR3\SCC\Coursework1\TravelBuddyServer\Travel with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@73d16e93 
 Loaded from file:/C:/Program%20Files/Java/jdk-17/db-derby-10.14.2.0-bin/lib/derby.jar
 java.vendor=Oracle Corporation

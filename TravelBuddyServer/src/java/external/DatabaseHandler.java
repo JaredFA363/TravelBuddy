@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package external;
+import com.google.gson.Gson;
 import java.sql.*;
 
 /**
@@ -11,7 +12,7 @@ import java.sql.*;
  */
 public class DatabaseHandler {
     
-    public String insertUser(String in_username,String in_name, String in_password){
+    public String insertUser(String JsonData){
         Connection mycon = null;
         Statement statement = null;
         
@@ -19,17 +20,26 @@ public class DatabaseHandler {
         RandomNumGetterSetter rngs = rn.getRandomID();
         int in_id = rngs.getRandom();
         
+        Gson gson = new Gson();
+        UserData userData = gson.fromJson(JsonData, UserData.class);
+        
+        String in_username = userData.getUsername();
+        String in_name = userData.getName();
+        String in_password = userData.getPassword();
+        
         String query = "INSERT INTO USERS (id, username, name, password) VALUES ("+in_id+",'"+in_username+"','"+in_name+"','"+in_password+"')";
         String response = "Error"; 
         
         try{
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             mycon = DriverManager.getConnection("jdbc:derby://localhost:1527/Travel","j","j");
             statement = mycon.createStatement();
             statement.executeUpdate(query);
             response = "Success";
         }
-        catch(SQLException e){
+        catch(ClassNotFoundException | SQLException e){
             e.printStackTrace();
+            response = e.getMessage();
         }
         
         return response;

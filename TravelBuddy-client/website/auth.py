@@ -19,16 +19,14 @@ def register():
         name = request.form.get('name')
         password = request.form.get('password')
 
-        user_data = {
-            "username": username,
-            "name": name,
-            "password": password
-        }
+        #server_url = f'http://localhost:8080/TravelBuddyServer/webresources/User/queryUser?username={username}&password={password}'
+        #response = requests.get(server_url)
 
-        json_data = json.dumps(user_data)
-        orchestrator_url = "http://localhost:8080/TravelBuddy/webresources/Orchestrator/saveUserData"
-        headers = {"Content-Type": "application/json"}
-        response = requests.post(orchestrator_url, data=json_data, headers=headers)
+        server_url = f'http://localhost:8080/TravelBuddyServer/webresources/User/insertUser'
+        data = {'username': username, 'name': name, 'password': password}
+        json_data = json.dumps(data)
+        headers = {'Content-Type': 'application/json'}
+        response = requests.post(server_url, data=json_data, headers=headers)
         print(response.text)
 
     return render_template("register.html")

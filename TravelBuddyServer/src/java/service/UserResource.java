@@ -38,15 +38,17 @@ public class UserResource {
 
     @Path("/insertUser")
     @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String insertUser(@QueryParam("username") String username,@QueryParam("name") String name,@QueryParam("password") String password){
-        String client_ans = "";
+    public String insertUser(String JsonData){
+        String client_ans = "Error";
         try{
-            client_ans = databaseHandler.insertUser(username, name, password);
+            client_ans = databaseHandler.insertUser(JsonData);
             return client_ans;
         }
         catch(Exception s){
             s.printStackTrace();
+            client_ans = s.getMessage() + JsonData;
         }
         return client_ans;
     }

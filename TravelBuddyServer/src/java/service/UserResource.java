@@ -16,6 +16,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import external.Result;
+import com.google.gson.Gson;
 
 /**
  * REST Web Service
@@ -44,13 +46,19 @@ public class UserResource {
         String client_ans = "Error";
         try{
             client_ans = databaseHandler.insertUser(JsonData);
-            return client_ans;
+            //return client_ans;
         }
         catch(Exception s){
             s.printStackTrace();
             client_ans = s.getMessage() + JsonData;
         }
-        return client_ans;
+        
+        Result result = new Result(client_ans);
+        Gson gson = new Gson();
+        String jsonResponse = gson.toJson(result, Result.class);
+        
+        return jsonResponse;
+        //return client_ans;
     }
     
     @Path("/queryUser")
@@ -60,12 +68,18 @@ public class UserResource {
         String client_ans = "";
         try{
             client_ans = databaseHandler.queryUser(username,password);
-            return client_ans;
         }
         catch(Exception s){
             s.printStackTrace();
+            client_ans = s.getMessage();
         }
-        return client_ans;
+        
+        Result result = new Result(client_ans);
+        Gson gson = new Gson();
+        var jsonResponse = gson.toJson(result, Result.class);
+        
+        return jsonResponse;
+        //return client_ans;
     }
     
     /**

@@ -1,2 +1,17 @@
 {% extends "base.html" %}
 {% block title %}Travel Buddy - Login{% endblock %}
+
+{% block content %}
+<form method = "GET">
+    <h3 align = "center">Login</h3>
+    <div>
+        <label for="username">Username</label>
+        <input type="text"  id="username" name = "username" placeholder="Enter Username">
+    </div>
+    <div>
+        <label for="password">Password</label>
+        <input type="password" id="password" name = "password" placeholder="Enter Password">
+    </div>
+    <button type = "submit"> Submit </buttonf>
+</form>
+{% endblock %}

@@ -25,23 +25,14 @@ public class RandomNumberService {
 
             if (con.getResponseCode() == 200) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                //StringBuilder response = new StringBuilder();
-                //String line;
-
-                //while ((line = reader.readLine()) != null) {
-                //    response.append(line);
-                //}
                 
                 String line = reader.readLine();
                 while (line != null){
                     response += line + "\r\n";
                     line = reader.readLine();
                 }
-                //reader.close();
-                //con.disconnect();
                 response = response.substring(1, response.length()-3);
                 //System.out.println("Generated IDs: " + response.toString());
-                //return response.toString();
             } else {
                 System.out.println("Failed to retrieve random IDs. HTTP error code: " + con.getResponseCode());
                 return "Failed to retrieve random IDs. HTTP error code:" + con.getResponseCode();

@@ -5,44 +5,31 @@
 package external;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.util.HashMap;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.List;
-import java.util.Map;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
  * @author jared
  */
 public class WeatherService {
-    public String generateWeather(){
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put("lon", "-1.15");
-        parameters.put("lat", "52.95");
-        parameters.put("lang", "en");
-        parameters.put("unit", "metric");
-        parameters.put("output", "json");
-        
-        StringBuilder convertedParamsToString = new StringBuilder();
-        for (Map.Entry<String, String> entry : parameters.entrySet()) {
-            if (convertedParamsToString.length() > 0) {
-                convertedParamsToString.append("&");
-            }
-            try{
-                convertedParamsToString.append(URLEncoder.encode(entry.getKey(), "UTF-8")).append("=").append(URLEncoder.encode(entry.getValue(), "UTF-8"));
-            }
-            catch( Exception e){
-                return e.getMessage();
-            }
-        }
-        
+    public String generateWeather(String location, int numDays){
         try{
-            URL url = new URL("http://www.7timer.info/bin/civillight.php?" + convertedParamsToString);
+            //URL url = new URL("http://www.7timer.info/bin/civillight.php?" + convertedParamsToString);
+            String apiUrl = String.format("https://api.weatherapi.com/v1/forecast.json?key=d54821ba7dec4d19a8e224016232712&q=%s&days=%d", location, numDays);
+            URL url = new URL(apiUrl);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
             String response = "";
@@ -50,14 +37,6 @@ public class WeatherService {
         
             if (con.getResponseCode() == 200) {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                    //StringBuilder response = new StringBuilder();
-                    //String line;
-
-                    //while ((line = reader.readLine()) != null) {
-                    //    response.append(line);
-                    //}
-                    //reader.close();
-                    //con.disconnect();
                     
                     String line = reader.readLine();
                     while (line != null){
@@ -65,9 +44,8 @@ public class WeatherService {
                         line = reader.readLine();
                     }
 
-                    System.out.println("Weather Forecast JSON Response:");
-                    System.out.println(response.toString());
-                    //return "Weather Forecast JSON Response:" + response.toString();
+                    //System.out.println("Weather Forecast JSON Response:");
+                    //System.out.println(response.toString());
                     return response;
                 } else {
                     return "Failed to retrieve weather forecast. HTTP error code:" + con.getResponseCode();
@@ -77,35 +55,47 @@ public class WeatherService {
         }
     }
     
-    public WeatherGetterSetter getWeather(){
-        String weatherJSON = this.generateWeather();
-        GsonBuilder builder = new GsonBuilder();
-        builder.setPrettyPrinting();
-        Gson gson = builder.create();
-        
-        WeatherGetterSetter ws = gson.fromJson(weatherJSON, WeatherGetterSetter.class);
-        
-        return ws;
+    public int calculateDays(String endDateString) {
+        LocalDate endDate = LocalDate.parse(endDateString, DateTimeFormatter.ISO_DATE);
+        LocalDate currentDate = LocalDate.now();
+        int daysDifference = (int) currentDate.until(endDate).getDays();
+        return daysDifference;
     }
     
-    /*public static void main(String args[]){
+    public JsonObject weatherJson(String location, String startDate, String endDate) {
+        
         WeatherService ws = new WeatherService();
-        ws.generateWeather();
-        WeatherGetterSetter wgs = ws.getWeather();
+        int numDays = ws.calculateDays(endDate) + 1;
+        String JsonString = ws.generateWeather(location,numDays);
+        
+        Gson gson = new Gson();
+        JsonObject jsonObject = gson.fromJson(JsonString, JsonObject.class);
 
-        List<WeatherGetterSetter.dataseries> dataseriesList = wgs.getDataseries();
-        if (dataseriesList != null) {
-            for (WeatherGetterSetter.dataseries dataseries : dataseriesList) {
-                System.out.println("Date: " + dataseries.getDate());
-                System.out.println("Weather: " + dataseries.getWeather());
+        JsonArray forecastdayArray = jsonObject.getAsJsonObject("forecast").getAsJsonArray("forecastday");
 
-                WeatherGetterSetter.dataseries.Temp2m temp2m = dataseries.getTemp2m();
-                if (temp2m != null) {
-                    System.out.println("Max Temperature: " + temp2m.getMax());
-                    System.out.println("Min Temperature: " + temp2m.getMin());
-                }
-                System.out.println();
+        Type listType = new TypeToken<List<ForecastDay>>() {}.getType();
+        List<ForecastDay> forecastDays = gson.fromJson(forecastdayArray, listType);
+
+        JsonObject filteredData = new JsonObject();
+        JsonArray filteredForecastDays = new JsonArray();
+
+        for (ForecastDay forecastDay : forecastDays) {
+            if (forecastDay.date.compareTo(startDate) >= 0 && forecastDay.date.compareTo(endDate) <= 0) {
+                JsonObject dayObject = new JsonObject();
+                dayObject.addProperty("date", forecastDay.date);
+                dayObject.addProperty("avgtemp_c", forecastDay.day.avgtemp_c);
+                dayObject.addProperty("condition", forecastDay.day.condition.text);
+                filteredForecastDays.add(dayObject);
             }
         }
+
+        filteredData.add("filteredForecastDays", filteredForecastDays);
+
+        return filteredData;
+    }
+    
+    /*public static void main(String[] args) {
+        WeatherService ws = new WeatherService();
+        System.out.println(ws.weatherJson("london","2023-12-29","2023-12-31"));
     }*/
 }

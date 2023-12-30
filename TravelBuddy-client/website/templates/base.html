@@ -13,8 +13,22 @@
           
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav mr-auto">
+                {% if session['username'] %}
                 <li class="nav-item active">
-                  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                  <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/book">Book Trip</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/yourTrips">Your Trips</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item active">
+                  <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="/login">Login</a>
@@ -22,16 +36,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/register">Register</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Your Trips</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/logout">Logout</a>
-                </li>
+                {% endif %}
               </ul>
-              <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Travelling From" aria-label="fromSearch">
-                <input class="form-control mr-sm-2" type="search" placeholder="Travelling To" aria-label="toSearch">
+              <form class="form-inline my-2 my-lg-0" action="{{ url_for('views.search') }}" method="GET">
+                <input class="form-control mr-sm-2" type="search" id="fromSearch" name="fromSearch" placeholder="Travelling From" aria-label="fromSearch">
+                <input class="form-control mr-sm-2" type="search" id="toSearch" name="toSearch" placeholder="Travelling To" aria-label="toSearch">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
               </form>
             </div>

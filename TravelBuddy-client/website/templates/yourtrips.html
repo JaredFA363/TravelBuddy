@@ -1,26 +1,16 @@
 {% extends "base.html" %}
-{% block title %}Travel Buddy - Home{% endblock %}
+{% block title %}Travel Buddy - Your Trips{% endblock %}
 {% block content %}
 <h1>All Trips</h1>
-    {% if session['username'] %}
-    <form method="post" action="{{ url_for('views.home') }}">
-        <div>
-            <label for="interest">Express interest:</label>
-            <input type="text"  id="interest" name = "interest" placeholder="Enter Trip Id">
-            <button type = "submit"> Submit </buttonf>
-        </div>
-    </form>
-    {% endif %}
     {% if trips_data %}
         <ul>
             {% for trip in trips_data %}
                 <li>
-                    <strong>Trip ID:</strong> {{ trip.trip_id }}<br>
+                    <strong>This User Expressed Interest:</strong> {{ trip.username }}<br>
                     <strong>Date From:</strong> {{ trip.date_from }}<br>
                     <strong>Date To:</strong> {{ trip.date_to }}<br>
                     <strong>Location From:</strong> {{ trip.location_from }}<br>
                     <strong>Location To:</strong> {{ trip.location_to }}<br>
-                    <strong>Weather:</strong> {{ trip.weather }}<br>
                 </li>
                 <br>
             {% endfor %}

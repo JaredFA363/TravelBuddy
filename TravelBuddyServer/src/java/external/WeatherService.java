@@ -96,6 +96,6 @@ public class WeatherService {
     
     /*public static void main(String[] args) {
         WeatherService ws = new WeatherService();
-        System.out.println(ws.weatherJson("london","2023-12-29","2023-12-31"));
+        System.out.println(ws.weatherJson("london","2023-12-30","2023-12-31"));
     }*/
 }

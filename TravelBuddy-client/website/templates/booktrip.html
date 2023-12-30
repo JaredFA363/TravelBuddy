@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Travel Buddy - Book{% endblock %}
+
+{% block content %}
+<form method = "POST">
+    <h3 align = "center">Book</h3>
+    <div>
+        <label for="date_from">Date From</label>
+        <input type="text" id="date_from" name="date_from" placeholder="Enter Date From">
+    </div>
+    <div>
+        <label for="date_to">Date To</label>
+        <input type="text" id="date_to" name="date_to" placeholder="Enter Date To">
+    </div>
+    <div>
+        <label for="location_from">Location From</label>
+        <input type="text" id="location_from" name="location_from" placeholder="Enter Location From">
+    </div>
+    <div>
+        <label for="location_to">Location To</label>
+        <input type="text" id="location_to" name="location_to" placeholder="Enter Location To">
+    </div>
+    <button type = "submit"  name="action" value="book_trip"> Submit Trip </buttonf>
+    <br>
+    <button type="submit" name="action" value="check_weather">Check Weather</button>
+</form>
+{% if weather_data %}
+    <h3>Weather Information For Trip:</h3>
+    <p>{{ weather_data }}</p>
+{% endif %}
+{% endblock %}

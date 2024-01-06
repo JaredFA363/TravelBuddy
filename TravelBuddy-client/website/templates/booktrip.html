@@ -26,6 +26,15 @@
 </form>
 {% if weather_data %}
     <h3>Weather Information For Trip:</h3>
-    <p>{{ weather_data }}</p>
+    <ul>
+        {% for day in weather_data.filteredForecastDays %}
+            <li>
+                <strong>Date:</strong> {{ day.date }}<br>
+                <strong>Average Temperature:</strong> {{ day.avgtemp_c }}°C<br>
+                <strong>Condition:</strong> {{ day.condition }}<br>
+            </li>
+            <br>
+        {% endfor %}
+    </ul>
 {% endif %}
 {% endblock %}

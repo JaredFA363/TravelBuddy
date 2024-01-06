@@ -28,16 +28,31 @@ def home():
     if response.status_code == 200:
         # Parse the JSON response
         trips_data = json.loads(response.text)
-        return render_template('home.html', trips_data=trips_data)
+        processed_trips_data = process_weather_data(trips_data)
+        return render_template('home.html', trips_data=processed_trips_data)
     else:
         return render_template('home.html')
+
+
+def process_weather_data(trips_data):
+    processed_data = []
+    for trip in trips_data:
+        trip_data = {
+            'trip_id': trip['trip_id'],
+            'date_from': trip['date_from'],
+            'date_to': trip['date_to'],
+            'location_from': trip['location_from'],
+            'location_to': trip['location_to'],
+            'weather': json.loads(trip['weather'])['filteredForecastDays']
+        }
+        processed_data.append(trip_data)
+    return processed_data
+
 
 @views.route('/search', methods = ['POST'])
 def search():
     if request.method == 'POST':
         server_url = 'http://localhost:8080/TravelBuddyServer/webresources/Trip/queryTrip'
-        #location_from = request.args.get('fromSearch')
-        #location_to = request.args.get('toSearch')
         location_from = request.form.get('fromSearch')
         location_to = request.form.get('toSearch')
         params = {'location_from': location_from, 'location_to': location_to}
@@ -83,3 +98,4 @@ def get_user_id(username):
             print(f'Error: {response.status_code}')
     except Exception as e:
         print(f'Request failed: {e}')
+

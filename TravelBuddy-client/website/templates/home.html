@@ -14,15 +14,22 @@
     {% if trips_data %}
         <ul>
             {% for trip in trips_data %}
+        <div>
+        <strong>ID:</strong> {{ trip.trip_id }}<br>
+        <strong>Date From:</strong> {{ trip.date_from }}<br>
+        <strong>Date To:</strong> {{ trip.date_to }}<br>
+        <strong>Location From:</strong> {{ trip.location_from }}<br>
+        <strong>Location To:</strong> {{ trip.location_to }}<br>
+        <strong>Weather:</strong><br>
+        <ul>
+            {% for weather_data in trip.weather %}
                 <li>
-                    <strong>Trip ID:</strong> {{ trip.trip_id }}<br>
-                    <strong>Date From:</strong> {{ trip.date_from }}<br>
-                    <strong>Date To:</strong> {{ trip.date_to }}<br>
-                    <strong>Location From:</strong> {{ trip.location_from }}<br>
-                    <strong>Location To:</strong> {{ trip.location_to }}<br>
-                    <strong>Weather:</strong> {{ trip.weather }}<br>
+                    Date: {{ weather_data.date }}  Avg-Temp: {{ weather_data.avgtemp_c }}°C  Condition: {{ weather_data.condition }}<br>
                 </li>
-                <br>
+            {% endfor %}
+        </ul>
+        </div>
+        <hr>
             {% endfor %}
         </ul>
     {% else %}

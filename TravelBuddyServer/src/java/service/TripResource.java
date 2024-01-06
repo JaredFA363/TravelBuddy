@@ -11,6 +11,7 @@ import external.WeatherService;
 import external.checkWeatherData;
 import external.getIDdata;
 import external.getQueryData;
+import external.getSpecificTrip;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -170,6 +171,33 @@ public class TripResource {
         Gson gson = new Gson();
         getIDdata IDdata = gson.fromJson(JsonData, getIDdata.class);
         return IDdata.getUserId();
+    }
+    
+    @Path("/getSpecificTrips")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getSpecificTrips(String JsonData) {
+        String client_ans = "Error - Resource";
+        
+        Gson gson = new Gson();
+        getSpecificTrip data = gson.fromJson(JsonData, getSpecificTrip.class);
+        
+        int user_id = Integer.parseInt(data.getUserId());
+        int trip_id = Integer.parseInt(data.getTripId());
+        
+        try {
+            client_ans = databaseHandler.specifiTrip(user_id, trip_id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        if (client_ans.equals("Error - Resource")){
+            Result result = new Result(client_ans);
+            var jsonResponse = gson.toJson(result, Result.class);
+            return jsonResponse;
+        }
+        return client_ans;
     }
     
     /**

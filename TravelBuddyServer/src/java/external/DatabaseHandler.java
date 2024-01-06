@@ -341,4 +341,38 @@ public class DatabaseHandler {
         return jsonArray.toString();
     }
     
+    public String specifiTrip(int userId, int TripId){
+        Connection mycon = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        JsonArray jsonArray = new JsonArray();
+        String query ="SELECT t.date_from, t.date_to, t.location_from, t.location_to, i.new_user_id "
+                         + "FROM trip t "
+                         + "JOIN interested i ON t.trip_id = i.trip_id "
+                         + "WHERE i.proposed_user_id ="+userId+ " AND t.trip_id ="+ TripId;
+        
+        try {
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+            mycon = DriverManager.getConnection("jdbc:derby://localhost:1527/Travel", "j", "j");
+            statement = mycon.createStatement();
+            resultSet = statement.executeQuery(query);
+            
+
+            while (resultSet.next()) {
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("date_from", resultSet.getString("date_from"));
+                jsonObject.addProperty("date_to", resultSet.getString("date_to"));
+                jsonObject.addProperty("location_from", resultSet.getString("location_from"));
+                jsonObject.addProperty("location_to", resultSet.getString("location_to"));
+                String username = getUsername(resultSet.getInt("new_user_id"));
+                jsonObject.addProperty("username",username);
+                jsonArray.add(jsonObject);
+            }
+                        
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return jsonArray.toString();
+    }
+    
 }

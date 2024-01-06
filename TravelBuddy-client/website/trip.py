@@ -34,22 +34,40 @@ def book():
 @trip.route('/yourTrips', methods=['GET','POST'])
 def yourTrips():
     if request.method == 'POST':
-        server_url = 'http://localhost:8080/TravelBuddyServer/webresources/Trip/getyourTrips'
-        json_id = get_user_id(session.get('username'))
-        userId = int(json_id.get('ans', ''))
-        params = {'userId' : userId}
-        json_data = json.dumps(params)
-        print(json_data)
-        headers = {'Content-Type': 'application/json'}
-        response = requests.post(server_url, data=json_data, headers=headers)
+        action = request.form.get('action')
+        if action == "check":
+            server_url = 'http://localhost:8080/TravelBuddyServer/webresources/Trip/getyourTrips'
+            json_id = get_user_id(session.get('username'))
+            userId = int(json_id.get('ans', ''))
+            params = {'userId' : userId}
+            json_data = json.dumps(params)
+            print(json_data)
+            headers = {'Content-Type': 'application/json'}
+            response = requests.post(server_url, data=json_data, headers=headers)
 
-        if response.status_code == 200:
-            # Parse the JSON response
-            trips_data = json.loads(response.text)
-            print(trips_data)
-            return render_template('yourtrips.html', trips_data=trips_data)
-        else:
-            return render_template('yourtrips.html')
+            if response.status_code == 200:
+                # Parse the JSON response
+                trips_data = json.loads(response.text)
+                print(trips_data)
+                return render_template('yourtrips.html', trips_data=trips_data)
+            else:
+                return render_template('yourtrips.html')
+        elif action == "specific":
+            server_url = 'http://localhost:8080/TravelBuddyServer/webresources/Trip/getSpecificTrips'
+            trip_id = request.form.get('TripId')
+            json_id = get_user_id(session.get('username'))
+            userId = int(json_id.get('ans', ''))
+            params = {'userId' : userId, 'TripId': trip_id}
+            json_data = json.dumps(params)
+            print(json_data)
+            headers = {'Content-Type': 'application/json'}
+            response = requests.post(server_url, data=json_data, headers=headers)
+
+            if response.status_code == 200:
+                # Parse the JSON response
+                trips_data = json.loads(response.text)
+                print(trips_data)
+                return render_template('yourtrips.html', trips_data=trips_data)
     else:
         return render_template('yourtrips.html')
 

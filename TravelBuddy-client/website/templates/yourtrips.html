@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Travel Buddy - Your Trips{% endblock %}
 {% block content %}
+<form method = "POST">
 <h1>All Trips</h1>
     {% if trips_data %}
         <ul>
@@ -18,4 +19,6 @@
     {% else %}
         <p>No trips available.</p>
     {% endif %}
+    <button type="submit">Submit</button>
+</form>
 {% endblock %}

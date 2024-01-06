@@ -90,11 +90,9 @@ public class DatabaseHandler {
         }
         
         Result result = new Result(response);
-        //Gson gson = new Gson();
         var jsonResponse = gson.toJson(result, Result.class);
         return jsonResponse;
         
-        //return response;
     }
     
     public String queryTrips(String in_location_from, String in_location_to){
@@ -332,7 +330,6 @@ public class DatabaseHandler {
                 jsonObject.addProperty("date_to", resultSet.getString("date_to"));
                 jsonObject.addProperty("location_from", resultSet.getString("location_from"));
                 jsonObject.addProperty("location_to", resultSet.getString("location_to"));
-                //jsonObject.addProperty("new_user_id", resultSet.getInt("new_user_id"));
                 String username = getUsername(resultSet.getInt("new_user_id"));
                 jsonObject.addProperty("username",username);
                 jsonArray.add(jsonObject);
@@ -344,36 +341,4 @@ public class DatabaseHandler {
         return jsonArray.toString();
     }
     
-    /*public static void main(String args[]){
-        DatabaseHandler db = new DatabaseHandler();
-        //String and = db.queryUser("u","u");
-        //System.out.println(and);
-        //System.out.println(db.convertStringToSqlDate("20231227"));
-        JsonObject json = new JsonObject();
-        //json.addProperty("trip_id", 9982);
-        //json.addProperty("proposed_user_id", 1);
-        //json.addProperty("new_user_id", 1);
-        
-        //json.addProperty("username", "t");
-        //json.addProperty("password", "v");
-  
-        //json.addProperty("userId", 1);
-        //json.addProperty("dateFrom", "2023-12-28");
-        //json.addProperty("dateTo", "2023-12-29");
-        //json.addProperty("locationFrom", "london");
-        //json.addProperty("locationTo", "nottingham");
-        //WeatherService ws = new WeatherService();
-        //String weather = ws.weatherJson("nottingham","2023-12-28","2023-12-29").toString();
-        //json.addProperty("weatherDescription", weather);
-        
-        System.out.println(json.toString());
-        
-        //db.insertTrip(json.toString());
-        //db.expressInterest(json.toString());
-        //db.queryTrips("london", "nottingham");
-        //System.out.println(db.queryUser(json.toString()));
-        
-        //System.out.println(db.queryTrips("london","nottingham"));
-        System.out.println(db.findInterestedUsers(1));
-    }*/
 }

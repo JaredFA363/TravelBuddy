@@ -12,7 +12,7 @@ def home():
         jsonuser_id = get_user_id(session.get('username'))
         user_id = jsonuser_id.get('ans', '')
 
-        if proposed_id != -1 and user_id != 1:
+        if proposed_id != -1 and user_id != -1:
             server_url = f'http://localhost:8080/TravelBuddyServer/webresources/Trip/expressInterest'
             data = {'trip_id':trip_id, 'proposed_user_id': proposed_id, 'new_user_id': user_id}
             json_data = json.dumps(data)
@@ -32,15 +32,18 @@ def home():
     else:
         return render_template('home.html')
 
-@views.route('/search')
+@views.route('/search', methods = ['POST'])
 def search():
-    if request.method == 'GET':
+    if request.method == 'POST':
         server_url = 'http://localhost:8080/TravelBuddyServer/webresources/Trip/queryTrip'
-        location_from = request.args.get('fromSearch')
-        location_to = request.args.get('toSearch')
+        #location_from = request.args.get('fromSearch')
+        #location_to = request.args.get('toSearch')
+        location_from = request.form.get('fromSearch')
+        location_to = request.form.get('toSearch')
         params = {'location_from': location_from, 'location_to': location_to}
+        json_data = json.dumps(params)
         try:
-            response = requests.get(server_url, params=params)
+            response = requests.post(server_url, data=json_data)
             if response.status_code == 200:
             # Parse the JSON response
                 #trips_data = json.loads(response.text)
@@ -56,10 +59,11 @@ def search():
 
 def get_proposed_user_id(trip_id):
     server_url = 'http://localhost:8080/TravelBuddyServer/webresources/User/getProposedID'
-    params = {'TripId': trip_id}
-
+    params = {'ans': str(trip_id)}
+    json_data = json.dumps(params)
+    print(json_data)
     try:
-        response = requests.get(server_url, params=params)
+        response = requests.post(server_url, data=json_data)
         if response.status_code == 200:
             return response.json() 
         else:
@@ -69,10 +73,10 @@ def get_proposed_user_id(trip_id):
 
 def get_user_id(username):
     server_url = 'http://localhost:8080/TravelBuddyServer/webresources/User/getID'
-    params = {'username': username}
-
+    params = {'ans': username}
+    json_data = json.dumps(params)
     try:
-        response = requests.get(server_url, params=params)
+        response = requests.post(server_url, data=json_data)
         if response.status_code == 200:
             return response.json() 
         else:

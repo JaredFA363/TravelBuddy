@@ -31,28 +31,34 @@ def book():
 
     return render_template("booktrip.html")
 
-@trip.route('/yourTrips')
+@trip.route('/yourTrips', methods=['GET','POST'])
 def yourTrips():
-    server_url = 'http://localhost:8080/TravelBuddyServer/webresources/Trip/getyourTrips'
-    json_id = get_user_id(session.get('username'))
-    userId = int(json_id.get('ans', ''))
-    params = {'userId' : userId}
-    response = requests.get(server_url, params=params)
+    if request.method == 'POST':
+        server_url = 'http://localhost:8080/TravelBuddyServer/webresources/Trip/getyourTrips'
+        json_id = get_user_id(session.get('username'))
+        userId = int(json_id.get('ans', ''))
+        params = {'userId' : userId}
+        json_data = json.dumps(params)
+        print(json_data)
+        headers = {'Content-Type': 'application/json'}
+        response = requests.post(server_url, data=json_data, headers=headers)
 
-    if response.status_code == 200:
-        # Parse the JSON response
-        trips_data = json.loads(response.text)
-        print(trips_data)
-        return render_template('yourtrips.html', trips_data=trips_data)
+        if response.status_code == 200:
+            # Parse the JSON response
+            trips_data = json.loads(response.text)
+            print(trips_data)
+            return render_template('yourtrips.html', trips_data=trips_data)
+        else:
+            return render_template('yourtrips.html')
     else:
         return render_template('yourtrips.html')
 
 def get_user_id(username):
     server_url = 'http://localhost:8080/TravelBuddyServer/webresources/User/getID'
-    params = {'username': username}
-
+    params = {'ans': username}
+    json_data = json.dumps(params)
     try:
-        response = requests.get(server_url, params=params)
+        response = requests.post(server_url, data=json_data)
         if response.status_code == 200:
             return response.json() 
         else:
@@ -63,8 +69,9 @@ def get_user_id(username):
 def get_weather_data(location_to, date_from, date_to):
     server_url = 'http://localhost:8080/TravelBuddyServer/webresources/Trip/CheckWeather'
     params = {'location_to': location_to, 'date_from': date_from, 'date_to':date_to}
+    json_data = json.dumps(params)
     try:
-        response = requests.get(server_url, params=params)
+        response = requests.post(server_url, data=json_data)
         if response.status_code == 200:
             return response.json() 
         else:

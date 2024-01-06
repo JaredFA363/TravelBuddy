@@ -38,7 +38,7 @@
                 </li>
                 {% endif %}
               </ul>
-              <form class="form-inline my-2 my-lg-0" action="{{ url_for('views.search') }}" method="GET">
+              <form class="form-inline my-2 my-lg-0" action="{{ url_for('views.search') }}" method="POST">
                 <input class="form-control mr-sm-2" type="search" id="fromSearch" name="fromSearch" placeholder="Travelling From" aria-label="fromSearch">
                 <input class="form-control mr-sm-2" type="search" id="toSearch" name="toSearch" placeholder="Travelling To" aria-label="toSearch">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>

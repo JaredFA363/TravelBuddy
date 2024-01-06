@@ -44,8 +44,6 @@ public class WeatherService {
                         line = reader.readLine();
                     }
 
-                    //System.out.println("Weather Forecast JSON Response:");
-                    //System.out.println(response.toString());
                     return response;
                 } else {
                     return "Failed to retrieve weather forecast. HTTP error code:" + con.getResponseCode();
@@ -94,8 +92,4 @@ public class WeatherService {
         return filteredData;
     }
     
-    /*public static void main(String[] args) {
-        WeatherService ws = new WeatherService();
-        System.out.println(ws.weatherJson("london","2023-12-30","2023-12-31"));
-    }*/
 }

@@ -14,7 +14,6 @@ public class TripData {
   private String dateTo;
   private String locationFrom;
   private String locationTo;
-  //private String weatherDescription;
 
 
  // Getter Methods 
@@ -38,10 +37,6 @@ public class TripData {
     return locationTo;
   }
 
-  /*public String getWeatherDescription() {
-    return weatherDescription;
-  }*/
-
  // Setter Methods 
   public void setUserId( int userId ) {
     this.userId = userId;
@@ -63,7 +58,4 @@ public class TripData {
     this.locationTo = locationTo;
   }
 
-  /*public void setWeatherDescription( String weatherDescription ) {
-    this.weatherDescription = weatherDescription;
-  }*/
 }

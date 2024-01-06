@@ -5,10 +5,12 @@
 package service;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import external.DatabaseHandler;
 import external.Result;
 import external.WeatherService;
+import external.checkWeatherData;
+import external.getIDdata;
+import external.getQueryData;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -17,7 +19,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
@@ -50,7 +51,7 @@ public class TripResource {
         }
         catch(Exception s){
             s.printStackTrace();
-            client_ans = s.getMessage() + JsonData;
+            //client_ans = s.getMessage() + JsonData;
         }
         if (client_ans.equals("Error - Resource")){
             Result result = new Result(client_ans);
@@ -62,20 +63,24 @@ public class TripResource {
     }
     
     @Path("/queryTrip")
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public String queryTrip(@QueryParam("location_from") String location_from, @QueryParam("location_to") String location_to){
+    public String queryTrip(String JsonData){
+        Gson gson = new Gson();
+        getQueryData data = gson.fromJson(JsonData, getQueryData.class);
+        
+        String location_from = data.getLocation_from();
+        String location_to = data.getLocation_to();
         String client_ans = "Error - Resource";
         try{
             client_ans = databaseHandler.queryTrips(location_from,location_to);
         }
         catch(Exception s){
             s.printStackTrace();
-            client_ans = s.getMessage();
+            //client_ans = s.getMessage();
         }
         if (client_ans.equals("Error - Resource")){
             Result result = new Result(client_ans);
-            Gson gson = new Gson();
             var jsonResponse = gson.toJson(result, Result.class);
             return jsonResponse;
         }
@@ -94,7 +99,7 @@ public class TripResource {
         }
         catch(Exception s){
             s.printStackTrace();
-            client_ans = s.getMessage() + JsonData;
+            //client_ans = s.getMessage() + JsonData;
         }
         if (client_ans.equals("Error - Resource")){
             Result result = new Result(client_ans);
@@ -106,9 +111,15 @@ public class TripResource {
     }
     
     @Path("/CheckWeather")
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public String CheckWeather(@QueryParam("location_to") String location_to, @QueryParam("date_from") String date_from, @QueryParam("date_to") String date_to){
+    public String CheckWeather(String JsonData){
+        Gson gson = new Gson();
+        checkWeatherData data = gson.fromJson(JsonData, checkWeatherData.class);
+        String date_from = data.getDate_from();
+        String date_to = data.getDate_to();
+        String location_to = data.getLocation_to();
+        
         WeatherService ws = new WeatherService();
         return ws.weatherJson(location_to,date_from,date_to).toString();
     }
@@ -122,7 +133,7 @@ public class TripResource {
             client_ans = databaseHandler.getAllTrips();
         } catch (Exception e) {
             e.printStackTrace();
-            client_ans = e.getMessage();
+            //client_ans = e.getMessage();
         }
         if (client_ans.equals("Error - Resource")){
             Result result = new Result(client_ans);
@@ -134,15 +145,17 @@ public class TripResource {
     }
     
     @Path("/getyourTrips")
-    @GET
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String getyourTrips(@QueryParam("userId") int userId) {
+    public String getyourTrips(String JsonData) {
         String client_ans = "Error - Resource";
+        int userID = unmarshallID(JsonData);
         try {
-            client_ans = databaseHandler.findInterestedUsers(userId);
+            client_ans = databaseHandler.findInterestedUsers(userID);
         } catch (Exception e) {
             e.printStackTrace();
-            client_ans = e.getMessage();
+            //client_ans = e.getMessage();
         }
         if (client_ans.equals("Error - Resource")){
             Result result = new Result(client_ans);
@@ -151,6 +164,12 @@ public class TripResource {
             return jsonResponse;
         }
         return client_ans;
+    }
+    
+    public int unmarshallID(String JsonData){
+        Gson gson = new Gson();
+        getIDdata IDdata = gson.fromJson(JsonData, getIDdata.class);
+        return IDdata.getUserId();
     }
     
     /**
@@ -172,4 +191,5 @@ public class TripResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public void putJson(String content) {
     }
+    
 }

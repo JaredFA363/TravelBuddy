@@ -5,7 +5,9 @@
         <group>
             <file>file:/C:/Users/jared/OneDrive/Documents/YEAR3/SCC/Coursework1/TravelBuddyServer/src/java/external/DatabaseHandler.java</file>
             <file>file:/C:/Users/jared/OneDrive/Documents/YEAR3/SCC/Coursework1/TravelBuddyServer/src/java/service/UserResource.java</file>
-            <file>file:/C:/Users/jared/OneDrive/Documents/YEAR3/SCC/Coursework1/TravelBuddyServer/src/java/external/RandomNumberService.java</file>
+            <file>file:/C:/Users/jared/OneDrive/Documents/YEAR3/SCC/Coursework1/TravelBuddyServer/src/java/service/TripResource.java</file>
+            <file>file:/C:/Users/jared/OneDrive/Documents/YEAR3/SCC/Coursework1/TravelBuddyServer/src/java/external/Result.java</file>
+            <file>file:/C:/Users/jared/OneDrive/Documents/YEAR3/SCC/Coursework1/TravelBuddyServer/src/java/external/getIDdata.java</file>
         </group>
     </open-files>
 </project-private>

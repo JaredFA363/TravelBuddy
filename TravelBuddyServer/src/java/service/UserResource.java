@@ -5,7 +5,6 @@
 package service;
 
 import external.DatabaseHandler;
-import java.sql.SQLException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -14,12 +13,10 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import external.Result;
 import external.ResultID;
 import com.google.gson.Gson;
-import javax.ws.rs.FormParam;
 
 /**
  * REST Web Service
@@ -48,11 +45,10 @@ public class UserResource {
         String client_ans = "Error - Resource";
         try{
             client_ans = databaseHandler.insertUser(JsonData);
-            //return client_ans;
         }
         catch(Exception s){
             s.printStackTrace();
-            client_ans = s.getMessage() + JsonData;
+            //client_ans = s.getMessage() + JsonData;
         }
         if (client_ans.equals("Error - Resource")){
             Result result = new Result(client_ans);
@@ -74,7 +70,7 @@ public class UserResource {
         }
         catch(Exception s){
             s.printStackTrace();
-            client_ans = s.getMessage() + JsonData;
+            //client_ans = s.getMessage() + JsonData;
         }
         
         if (client_ans.equals("Error - Resource")){
@@ -87,36 +83,39 @@ public class UserResource {
     }
     
     @Path("/getID")
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public String getID(@QueryParam("username") String username) {
+    public String getID(String JsonData) {
+        Gson gson = new Gson();
+        Result result = gson.fromJson(JsonData, Result.class);
+        String username = result.getKey();
+        
         int client_ans = -1;
         try {
             client_ans = databaseHandler.getID(username);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //return client_ans;
-        ResultID result = new ResultID(client_ans);
-        Gson gson = new Gson();
-        var jsonResponse = gson.toJson(result, ResultID.class);
+        ResultID results = new ResultID(client_ans);
+        var jsonResponse = gson.toJson(results, ResultID.class);
         return jsonResponse;
     }
     
     @Path("getProposedID")
-    @GET
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public String getProposedID(@QueryParam("TripId") int TripId) {
+    public String getProposedID(String JsonData) {
+        Gson gson = new Gson();
+        Result result = gson.fromJson(JsonData, Result.class);
+        int TripId = Integer.parseInt(result.getKey());
         int client_ans = -1;
         try {
             client_ans = databaseHandler.getProposedUserID(TripId);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //return client_ans;
-        ResultID result = new ResultID(client_ans);
-        Gson gson = new Gson();
-        var jsonResponse = gson.toJson(result, ResultID.class);
+        ResultID results = new ResultID(client_ans);
+        var jsonResponse = gson.toJson(results, ResultID.class);
         return jsonResponse;
     }
     

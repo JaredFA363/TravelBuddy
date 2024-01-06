@@ -54,11 +54,4 @@ public class RandomNumberService {
         return rn;
     }
     
-    //public static void main(String args[]){
-    //    RandomNumberService rn = new RandomNumberService();
-        //String ans = rn.generateRandomID();
-        //System.out.println(ans);
-    //    RandomNumGetterSetter rngs = rn.getRandomID();
-    //    System.out.println(rngs.getRandom());
-    //}
 }

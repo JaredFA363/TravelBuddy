@@ -35,7 +35,7 @@ def login():
 @auth.route('/logout')
 def logout():
     session.pop('username', None)
-    flash('Logout successful', 'success')
+    flash('Logout successful', 'Success')
     return redirect(url_for('auth.login'))
 
 @auth.route('/register', methods = ['GET', 'POST'])

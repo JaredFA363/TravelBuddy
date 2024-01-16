@@ -1,7 +1,7 @@
-Sun Jan 07 15:07:32 GMT 2024 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 1527
+Fri Jan 12 16:43:32 GMT 2024 : Apache Derby Network Server - 10.14.2.0 - (1828579) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Sun Jan 07 15:07:32 GMT 2024:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-018c-e476-fc38-ffff92c1d068 
+Fri Jan 12 16:43:32 GMT 2024:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-018c-fe8e-aa88-ffff92c1d068 
 on database directory C:\Users\jared\OneDrive\Documents\YEAR3\SCC\Coursework1\TravelBuddyServer\Travel with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@73d16e93 
 Loaded from file:/C:/Program%20Files/Java/jdk-17/db-derby-10.14.2.0-bin/lib/derby.jar
 java.vendor=Oracle Corporation
@@ -13,8 +13,8 @@ os.version=10.0
 derby.system.home=C:\Users\jared\OneDrive\Documents\YEAR3\SCC\Coursework1\TravelBuddyServer
 Database Class Loader started - derby.database.classpath=''
 ----------------------------------------------------------------
-Sun Jan 07 15:14:10 GMT 2024: Shutting down Derby engine
+Fri Jan 12 17:04:21 GMT 2024: Shutting down Derby engine
 ----------------------------------------------------------------
-Sun Jan 07 15:14:10 GMT 2024:
-Shutting down instance a816c00e-018c-e476-fc38-ffff92c1d068 on database directory C:\Users\jared\OneDrive\Documents\YEAR3\SCC\Coursework1\TravelBuddyServer\Travel with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@73d16e93 
+Fri Jan 12 17:04:21 GMT 2024:
+Shutting down instance a816c00e-018c-fe8e-aa88-ffff92c1d068 on database directory C:\Users\jared\OneDrive\Documents\YEAR3\SCC\Coursework1\TravelBuddyServer\Travel with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@73d16e93 
 ----------------------------------------------------------------

@@ -66,7 +66,8 @@ def search():
                 inner_json_str = json_data.get("ans", "")
                 trips_data = json.loads(inner_json_str)
                 #trips_data = response.json()
-                return render_template('home.html', trips_data=trips_data)
+                processed_trips_data = process_weather_data(trips_data)
+                return render_template('home.html', trips_data=processed_trips_data)
             else:
                 return render_template('home.html')
         except Exception as e:

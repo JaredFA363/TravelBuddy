@@ -99,7 +99,7 @@ public class DatabaseHandler {
         Connection mycon = null;
         Statement statement = null;
         ResultSet rs = null;
-        String query = "SELECT * FROM TRIP WHERE location_from = '"+in_location_from+"' AND location_to = '"+in_location_to+"'";
+        String query = "SELECT * FROM TRIP WHERE location_from = '"+in_location_from+"' AND location_to = '"+in_location_to+"' AND DATE(date_from) >= CURRENT_DATE";
         String response = "Error - from DB"; 
         
         try{
@@ -215,7 +215,7 @@ public class DatabaseHandler {
         Connection mycon = null;
         Statement statement = null;
         ResultSet rs = null;
-        String query = "SELECT * FROM TRIP";
+        String query = "SELECT * FROM TRIP WHERE DATE(date_from) >= CURRENT_DATE";
         String response = "Error - from DB";
 
         try {
